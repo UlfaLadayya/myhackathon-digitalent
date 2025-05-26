@@ -1,0 +1,311 @@
+#img_signup{
+    /* padding-top: 110px;
+    padding-bottom: 100px;
+    padding-right: 160px; */
+    margin-left: 120px;
+    /* margin-bottom: 100px; */
+
+    /* margin-right: -160px; */
+
+    /* margin-top: -100px; */
+    /* width: 1000px;
+    height: auto;*/
+    display: flex; 
+    /* position: absolute; */
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#img_signup{
+    padding-top: 110px;
+    padding-bottom: 100px;
+    padding-right: 160px;
+    /* margin-left: 120px;*/
+    /* margin-bottom: 100px; */
+
+    /* margin-right: -160px; */
+
+    /* margin-top: -100px; */
+    /* width: 1000px;
+    height: auto;
+    display: flex; */
+position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+}
+/*Beginning of Setting Fonts*/
+@font-face {
+    font-family: 'Lora';
+    src: url('/fonts/subset-Lora-Bold.woff') format('woff'),
+    url('/fonts/subset-Lora-Bold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lora';
+    src: url('/fonts/subset-Lora-Regular.woff') format('woff'),
+    url('/fonts/subset-Lora-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lora';
+    src: url('/fonts/subset-Lora-Italic.woff') format('woff'),
+    url('/fonts/subset-Lora-Italic.woff2') format('woff2');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Lora';
+    src: url('/fonts/subset-Lora-BoldItalic.woff') format('woff'),
+    url('/fonts/subset-Lora-BoldItalic.woff2') format('woff2');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Lora';
+    src: url('/fonts/subset-Lora-Medium.woff') format('woff'),
+    url('/fonts/subset-Lora-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lora';
+    src: url('/fonts/subset-Lora-MediumItalic.woff') format('woff'),
+    url('/fonts/subset-Lora-MediumItalic.woff2') format('woff2');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Lora';
+    src: url('/fonts/subset-Lora-SemiBold.woff') format('woff'),
+    url('/fonts/subset-Lora-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lora';
+    src: url('/fonts/subset-Lora-SemiBoldItalic.woff') format('woff'),
+    url('/fonts/subset-Lora-SemiBolItalic.woff2') format('woff2');
+    font-weight: 600;
+    font-style: italic;
+}
+/*End of Setting Fonts*/
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #F0F1C5;
+}
+html, body{
+    margin: 0;
+    height: 100%;
+}
+
+/*Welcome Screen Page*/
+.welcomescreen_main{
+    width: 100%;
+    padding: 0;
+}
+.welcomepage_main{
+    background-image: linear-gradient(to right, #6F826A , #F0F1C5);
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+}
+.welcome_content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 50px;
+    min-height: 100vh;
+    /* padding: 80px 60px; */
+}
+.left_content .right_content{
+    flex: 1;
+    max-width: 50%;
+}
+.right_content{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    /* align-items: stretch; */
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
+}
+.right_content img{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100%;
+    bottom: 0;
+    /* width: auto; */
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+@media (max-width:768px){
+    .welcome_content{
+        flex-direction: column;
+        padding: 0 20px 20px 20px;
+        gap: 20px;
+    }
+
+    /* .right_content{
+        padding-top: -50px;
+        padding: 0 20px 20px 20px;
+    } */
+
+    /* .left_content .right_content{
+        max-width: 100%;
+    } */
+
+    .right_content img{
+        /* max-width: 100%; */
+        /* width: 500px; */
+        /* width: 100%;
+        max-width: 400px; */
+        /* height: auto; */
+        display: block;
+        margin: auto;
+        /* margin-left: 40px;
+        margin-bottom: 980px;
+        margin-top: 0; */
+        /* margin-right: 40px; */
+        /* margin: 0 auto; */
+    }
+
+    .left_content{
+        /* padding-right: 40px; */
+        /* padding: 40px 20px 20px 20px; */
+        /* margin-bottom: 20px; */
+        padding: 20px;
+        margin-top: -68px;
+    }
+
+    /* img{
+        margin-left: 40px;
+        width: 250px;
+        height: auto;
+    } */
+}
+.left_content{
+    font-weight: bold;
+    /* padding: 140px 40px; */
+    padding-top: 140px;
+    padding-bottom: 20px;
+    padding-left: 40px;
+    /* padding-right: 40px; */
+    color: black;
+}
+#title_welcome{
+    font-family: 'Lora', serif;
+    font-weight: bold;
+    font-style: italic;
+}
+#earlier_content{
+    font-family: 'Lora', serif;
+    font-weight: 500;
+    font-style: italic;
+    font-size: 20px;
+    text-align: justify;
+}
+
+/* img{ */
+        /* margin-bottom: -900px; */
+    /* margin: 140px 40px; */
+    /* margin-top: -70px;
+    margin-right: -120px;
+
+    /* margin-left: 40px; */
+    /* margin-right: 40px; */
+    /* width: 690px;
+    height: 100vh;
+    object-fit: cover;
+    display: block; */
+    /* border-radius: 6px; */
+    /* box-shadow: 10px 10px 5px#6F826A; */
+
+/* } */
+
+/* .welcomepage_main{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 60px;
+} */
+
+.welcomebutton_main{
+    text-align:left;
+    padding: 40px;
+}
+
+.welcomebutton_main .custom-btn{
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #BF9264;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+    /* -webkit-appearance: none; */
+    outline: none;
+    box-shadow: none;
+}
+
+.welcomebutton_main .custom-btn:hover{
+    background-color:  #6F826A;
+    color: white;
+}
+.welcomebutton_main 
+.custom-btn:active{
+    background-color: #6F826A;
+    transform: scale(0.98);
+    box-shadow: none;
+    outline: none;
+}
+/* button, button:focus, button:active, .btn, .btn:focus, .btn:active{
+    outline: none !important;
+    /* background-color: #F0F1C5 !important; */
+.welcomebutton_main .custom-btn:focus-visible{
+    box-shadow: 0 0 0 3px rgba(126, 255, 94, 0.4);
+}
+
+/* button:focus-visible, .btn:focus-visible{
+    outline: none;
+    box-shadow: 0 0 0 2px #6F826A;
+    transition: box-sahdow 0.3s ease;
+}
+.btn:hover{
+    background-color: #F0F1C5;
+}
+
+.btn:focus-visible{
+    box-shadow: 0 0 0 2px #6F826A;
+} */
+
+/*End Welcome Screen Page*/
