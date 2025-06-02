@@ -23,7 +23,7 @@
         <div id="hero_cardtwo">
             <div id="hero_cardbody">
                 <h4 class="hero_cardtitle">Saran dan Kritik</h5>
-                <p class="hero_cardtext">You can give suggestions and criticism for this website. Just click words below..</p>
+                <p class="hero_cardtext">Anda dapat memberikan saran dan kritik untuk situs web ini. Cukup klik kata-kata di bawah ini...</p>
                 <a href="/suggestionscriticism" class="hero_cardlink btn">Ungkapkan pikiranmu</a>
             </div>
         </div>
@@ -33,7 +33,7 @@
     <div id="home">
         <div class="lefthomepage_content">
             <p id="homepage_showcontent">Teknologi Informasi dan Komunikasi</p>
-            <p id="homepage_showsubcontent">Bagian ini anda dapat melihat semua tentang Teknologi Informasi dan Komunikasi (TIK). 
+            <p id="homepage_showsubcontent">Di dalam bagian ini anda dapat melihat semua tentang Teknologi Informasi dan Komunikasi (TIK). 
                 Mau tahu lebih lanjut? Klik button di bawah..<br>
                 <a href="/teknologiinformasidankomunikasi" class="btn btn-outline-dark">Mari ketahui lebih lanjut..</a>
             </p>

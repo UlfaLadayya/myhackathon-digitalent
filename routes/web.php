@@ -1,14 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Models\Signupuser;
-
-use App\Http\Controllers\AccountController;
-use App\Http\Controllers\NavbarUserController;
-use App\Http\Controllers\ContentUserController;
-use App\Http\Controllers\WelcomePageController;
+use Illuminate\Support\Facades\Route;
 
 use App\Http\Middleware\NoBackHistory;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\TxTFileController;
+use App\Http\Controllers\NavbarUserController;
+
+use App\Http\Controllers\ContentUserController;
+use App\Http\Controllers\WelcomePageController;
+use App\Http\Controllers\TextToSpeechController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +56,18 @@ Route::get('/masaprasejarah',[ContentUserController::class, 'masaprasejarah']);
 Route::get('/masasejarah',[ContentUserController::class, 'masasejarah']);
 Route::get('/masamodern',[ContentUserController::class, 'masamodern']);
 Route::get('/sejarahperkembangankomputer',[ContentUserController::class, 'sejarahperkembangankomputer']);
+
+// Route::post('/texttospeech', [TextToSpeechController::class, 'texttospeech']);
+Route::get('/tts', [TextToSpeechController::class, 'index']);
+Route::post('/tts/texttospeech', [TextToSpeechController::class, 'texttospeech']);
+
+Route::get('/txtfile', [TxTFileController::class, 'other']);
+Route::post('/txtfile/audiorequestcontrol', [TxTFileController::class, 'audiorequestcontrol']);
+
+// Route::get('/tts/play', [TxTFileController::class, 'play']);
+// Route::get('/tts/play/{filename}', [TxTFileController::class, 'play']);
+Route::post('/tts/generate', [TxTFileController::class, 'generate']);
+Route::get('/tts/play/{filename}', [TxTFileController::class, 'play']);
 
 
 Route::post('/logoutuser',[AccountController::class, 'logoutuser'])->name('logoutuser');

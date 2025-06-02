@@ -3,11 +3,11 @@
 @section('container')
 
 <div class="technology_content">
-    <p id="intro_petualangan">Hi, Sobat Cerdas.. Selamat Datang di PetuTeInKo (Petualangan Teknologi Informasi dan Komunikasi). Di halaman ini sobat dapat
-        mengetahui sejarah perkembangan TIK, pengertiannya, komponen, manfaat, dampak, dan penerapannya. Untuk mengetahui semua itu,
-        sobat cerdas akan MinGK ajak untuk berpetualang menemukan semua item pembahasan yang sudah disebutkan sebelumnya. 
-        <br><br>
-        Caranya ikuti saja alur route map dari awal hingga akhir dan temukan item-item tersebut <strong>dengan cara klik gambarnya ya..</strong> <br>Selamat berpetualang sobat cerdas..
+    <button id="btnSpeech">
+        <img id="icon_voice" src="assets/images/voice.png" alt="icon-voice">
+    </button>
+    <p id="intro_petualangan">
+        {!! $contentTik !!}
     </p>
     <div class="container_route">
         <img class="route_map" src="assets/images/routemap.png" alt="route-map">
@@ -33,6 +33,97 @@
 </div>
 
 @endsection
+
+@section('script')
+    <script>
+        document.getElementById('btnSpeech').addEventListener('click', () => {
+            const text = document.getElementById('intro_petualangan').textContent.trim();
+            if (!text) {
+                alert('Teks kosong!');
+                return;
+            }
+
+            fetch('/tts/texttospeech', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ text })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Gagal request TTS');
+                return res.blob();
+            })
+            .then(blob => {
+                const audioUrl = URL.createObjectURL(blob);
+                const audio = new Audio(audioUrl);
+                audio.play();
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Gagal memutar suara: ' + err.message);
+            });
+        });
+    </script>
+@endsection
+
+{{-- <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const playBtn = document.getElementById('play');
+    playBtn.addEventListener('click', async () => {
+        const text = {!! json_encode(strip_tags($contentTik)) !!};
+
+        const response = await fetch('/texttospeech', {  // sesuaikan URL endpoint
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ text })
+        });
+
+        if (!response.ok) {
+            alert('Gagal memutar suara');
+            return;
+        }
+
+        const audioData = await response.arrayBuffer();
+        const audioBlob = new Blob([audioData], { type: 'audio/mpeg' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        audio.play();
+    });
+});
+</script> --}}
+
+{{-- @section('script')
+<script>
+document.getElementById('play').addEventListener('click', async () => {
+    const text = {!! json_encode(strip_tags($contentTik)) !!};
+
+    const response = await fetch('/texttospeech', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ text })
+    });
+
+    if (!response.ok) {
+        alert('Gagal memutar suara');
+        return;
+    }
+
+    const audioData = await response.arrayBuffer();
+    const audioBlob = new Blob([audioData], { type: 'audio/mpeg' });
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const audio = new Audio(audioUrl);
+    audio.play();
+});
+</script>
+@endsection --}}
 
 {{-- <div class="pengetahuanumum_content">
     <p id="pengetahuanumum_subtitle">Kategori Pengetahuan Umum</p>

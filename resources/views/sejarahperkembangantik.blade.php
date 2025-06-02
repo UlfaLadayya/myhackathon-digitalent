@@ -7,8 +7,13 @@
     <p id="technology_subtitle"><u>Sejarah Perkembangan Teknologi Informasi dan Komunikasi</u></p>
     <p class="writer_content">Ditulis oleh : Ulf's Creativity <br> Source : Buku DASAR-DASAR PENGANTAR TEKNOLOGI INFORMASI (Bayu Rianto & Welly Dozan, Juni 2020)</p>
 
+    <button id="btnSejarah">
+        <img id="icon_voice" src="assets/images/voice.png" alt="icon-voice">
+    </button>
+    
     <div id="content_tik">
-        Hi, sobat cerdas.. Sebelum kita mulai berpetualang di bagian <i>technology</i> khususnya Teknologi Informasi dan Komunikasi,
+        {!! $contentSejarahTik !!}
+        {{-- Hi, sobat cerdas.. Sebelum kita mulai berpetualang di bagian <i>technology</i> khususnya Teknologi Informasi dan Komunikasi,
         aku mau berkenalan dengan sobat cerdas semua. Aku MinSmarGenKnowsite (Mimin Smart General Knowledge Website), karena kepanjangan
         sobat cerdas bisa panggi aku MinGK, GK itu singkatan dari <i>general knowledge</i> ya, sebut saja dalam bahasa inggris "ji kei", 
         jadi Min ji kei/Mimin ji kei, hehehe.. 
@@ -20,7 +25,7 @@
         alat-alat mekanik untuk mekanisme perhitungan. Apakah sejarahnya berhenti sampai tahap itu saja? Tentu tidak sobat cerdas, karena penelitian
         terus dilaksanakan yang bertujuan untuk menemukan alat-alat yang dapat memudahkan hidup manusia.
         <br><br>
-        <b>Jika ingin tahu lebih lanjut, klik setiap gambar di bawah ini ya sobat cerdas..</b>
+        <b>Jika ingin tahu lebih lanjut, klik setiap gambar di bawah ini ya sobat cerdas..</b> --}}
 
         <div class="sejarahpage_content">
 
@@ -258,4 +263,38 @@
     </div>
 </div>
 
+@endsection
+
+@section('script')
+    <script>
+        document.getElementById('btnSejarah').addEventListener('click', () => {
+            const text = document.getElementById('content_tik').textContent.trim();
+            if (!text) {
+                alert('Teks kosong!');
+                return;
+            }
+
+            fetch('/tts/texttospeech', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ text })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Gagal request TTS');
+                return res.blob();
+            })
+            .then(blob => {
+                const audioUrl = URL.createObjectURL(blob);
+                const audio = new Audio(audioUrl);
+                audio.play();
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Gagal memutar suara: ' + err.message);
+            });
+        });
+    </script>
 @endsection

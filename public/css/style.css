@@ -532,9 +532,9 @@ html {
     box-shadow: none !important;
 } */
 .hero_cardlink:hover{
-    background-color: #1e3460 !important;
+    background-color: #0090c6 !important;
     color: white !important;
-    /* background-color: #22c5e5 !important;
+    /* background-color: #22c5e5 !important; #1e3460
     color:#1e3460 !important; */
     outline: none !important;
 }
@@ -904,7 +904,7 @@ ul .ul_circle{
     font-style: italic;
     padding-left: 43px;
     padding-right: 43px;
-    padding-top: 120px;
+    padding-top: 25px;
     text-align: justify;
 }
 .route_map{
@@ -1118,6 +1118,20 @@ img.object-point-f:active{
     padding: 15px 15px;
     text-align: justify;
 }
+#content_About{
+    font-family: 'Lora', serif;
+    font-weight: 400;
+    font-style: italic;
+    padding: 15px 15px;
+    text-align: justify;
+}
+#content_Kritik{
+    font-family: 'Lora', serif;
+    font-weight: 400;
+    font-style: italic;
+    padding: 15px 15px;
+    text-align: justify;
+}
 #content_komponen{
     font-family: 'Lora', serif;
     font-weight: 400;
@@ -1145,6 +1159,172 @@ img.object-point-f:active{
     font-style: italic;
     padding: 10px 10px;
     text-align: justify;
+}
+
+#icon_voice{
+    /* padding-top: 250x;
+    padding-bottom: 20px; */
+    /* padding-top: -700px; */
+    /* margin-top: 120px; */
+    width: auto;
+    height: 35px;
+    /* padding-left: 43px;
+    padding-right: 43px; */
+}
+#btnSpeech{
+    width: 60px; 
+    height: 60px;
+    margin-top: 120px;
+    margin-left: 43px;
+    outline: none;
+    border: none;
+    border-radius: 12px;
+    background-image: linear-gradient(to right, #ffffff, #47dff1) !important;
+    filter: drop-shadow(5px 4px 2px #203e6d);
+}
+#btnAbout{
+    width: 60px; 
+    height: 60px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+    margin-left: 12px;
+    outline: none;
+    border: none;
+    border-radius: 12px;
+    background-image: linear-gradient(to right, #47dff1, #ffffff) !important;
+    filter: drop-shadow(5px 4px 2px #203e6d);
+}
+#btnKritik{
+    width: 60px; 
+    height: 60px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+    margin-left: 12px;
+    outline: none;
+    border: none;
+    border-radius: 12px;
+    background-image: linear-gradient(to right, #47dff1, #ffffff) !important;
+    filter: drop-shadow(5px 4px 2px #203e6d);
+}
+#btnSejarah{
+    width: 60px; 
+    height: 60px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+    margin-left: 43px;
+    outline: none;
+    border: none;
+    border-radius: 12px;
+    background-image: linear-gradient(to right, #ffffff, #47dff1) !important;
+    filter: drop-shadow(5px 4px 2px #203e6d);
+}
+#btnPengertianTik{
+    width: 60px; 
+    height: 60px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+    margin-left: 18px;
+    outline: none;
+    border: none;
+    border-radius: 12px;
+    background-image: linear-gradient(to right,  #47dff1, #ffffff) !important;
+    filter: drop-shadow(5px 4px 2px #203e6d);
+}
+#btnKomponen{
+    width: 60px; 
+    height: 60px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+    margin-left: 18px;
+    outline: none;
+    border: none;
+    border-radius: 12px;
+    background-image: linear-gradient(to right, #47dff1, #ffffff) !important;
+    filter: drop-shadow(5px 4px 2px #203e6d);
+}
+#btnManfaat{
+    width: 60px; 
+    height: 60px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+    margin-left: 18px;
+    outline: none;
+    border: none;
+    border-radius: 12px;
+    background-image: linear-gradient(to right, #47dff1, #ffffff) !important;
+    filter: drop-shadow(5px 4px 2px #203e6d);
+}
+#btnDampak{
+    width: 60px; 
+    height: 60px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+    margin-left: 18px;
+    outline: none;
+    border: none;
+    border-radius: 12px;
+    background-image: linear-gradient(to right, #47dff1, #ffffff) !important;
+    filter: drop-shadow(5px 4px 2px #203e6d);
+}
+#btnPenerapan{
+    width: 60px; 
+    height: 60px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+    margin-left: 18px;
+    outline: none;
+    border: none;
+    border-radius: 12px;
+    background-image: linear-gradient(to right, #47dff1, #ffffff) !important;
+    filter: drop-shadow(5px 4px 2px #203e6d);
+}
+#btnMasaPrasejarah{
+    width: 60px; 
+    height: 60px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    outline: none;
+    border: none;
+    border-radius: 12px;
+    background-image: linear-gradient(to right, #47dff1, #ffffff) !important;
+    filter: drop-shadow(5px 4px 2px #203e6d);
+}
+#btnMasaSejarah{
+    width: 60px; 
+    height: 60px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    outline: none;
+    border: none;
+    border-radius: 12px;
+    background-image: linear-gradient(to right, #47dff1, #ffffff) !important;
+    filter: drop-shadow(5px 4px 2px #203e6d);
+}
+#btnMasaModern{
+    width: 60px; 
+    height: 60px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+    margin-left: 18px;
+    outline: none;
+    border: none;
+    border-radius: 12px;
+    background-image: linear-gradient(to right, #47dff1, #ffffff) !important;
+    filter: drop-shadow(5px 4px 2px #203e6d);
+}
+#btnSejarahPerkembanganKomputer{
+    width: 60px; 
+    height: 60px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+    margin-left: 43px;
+    outline: none;
+    border: none;
+    border-radius: 12px;
+    background-image: linear-gradient(to right, #ffffff, #47dff1) !important;
+    filter: drop-shadow(5px 4px 2px #203e6d);
 }
 /*Footer*/
 .container_footer{

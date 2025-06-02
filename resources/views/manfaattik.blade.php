@@ -8,8 +8,12 @@
 
     <div id="card-tik1" class="card">
         <div id="card-tik2" class="card-body">
+            <button id="btnManfaat">
+                <img id="icon_voice" src="assets/images/voice.png" alt="icon-voice">
+            </button>
             <div id="content_manfaat">
-                Berikut merupakan beberapa manfaat dari teknologi informasi dan komunikasi.
+                {!! $contentManfaat !!}
+                {{-- Berikut merupakan beberapa manfaat dari teknologi informasi dan komunikasi.
                 <ol type="1">
                     <li><b>Akses Informasi</b></li>
                     Keuntungan dari teknologi informasi dan komunikasi memungkinkan orang untuk mendapatkan berbagai jenis informasi, mulai dari berita hingga pendidikan, melalui internet. Ini sangat berguna 
@@ -71,7 +75,7 @@
                     pengembangan konten pendidikan yang interaktif. Ini sangat membantu dalam meningkatkan kualitas pendidikan dan memberikan akses 
                     pendidikan bagi individu dengan keterbatasan.
 
-                </ol>
+                </ol> --}}
             </div>
         </div>
     </div>
@@ -79,4 +83,38 @@
     
 </div>
 
+@endsection
+
+@section('script')
+    <script>
+        document.getElementById('btnManfaat').addEventListener('click', () => {
+            const text = document.getElementById('content_manfaat').textContent.trim();
+            if (!text) {
+                alert('Teks kosong!');
+                return;
+            }
+
+            fetch('/tts/texttospeech', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ text })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Gagal request TTS');
+                return res.blob();
+            })
+            .then(blob => {
+                const audioUrl = URL.createObjectURL(blob);
+                const audio = new Audio(audioUrl);
+                audio.play();
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Gagal memutar suara: ' + err.message);
+            });
+        });
+    </script>
 @endsection

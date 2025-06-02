@@ -8,10 +8,13 @@
 
     <div id="card-tik1" class="card">
         <div id="card-tik2" class="card-body">
+            <button id="btnMasaSejarah">
+                <img id="icon_voice" src="assets/images/voice.png" alt="icon-voice">
+            </button>
             <div id="tech_per_item_sejarah">
-                <p id="tech_sub">--Penemuan alat TIK pada Masa Sejarah--</p>        
+                <p id="tech_sub">{!! $subJudul !!}</p>        
                 <ul class="ul_circle">
-                    <li><b>Bangsa Sumeria</b> menemukan tulisan untuk pertama kalinya berupa simbol-simbol yang disebut <b>piktografi (3000 SM)</b>.</li>
+                    <li>{!! $contentMasaSejarah1 !!}</li>
                     <img class="imgmasasejarah" src="assets/images/tulisanpiktograf.jpg" class="card-img-top" alt="Tulisan Piktograf Bangsa Sumeria">
                     <div id="source-img">
                         <p>
@@ -19,7 +22,7 @@
                         </p>
                     </div>
 
-                    <li><b>Bangsa Mesir Kuno</b> sudah mengembangkan tulisan <b>Hieroglif</b> untuk berkomunikasi <b>(2900 SM)</b>.</li>
+                    <li>{!! $contentMasaSejarah2 !!}</li>
                     <img class="imgmasasejarah" src="assets/images/gambarhieroglif.jpg" class="card-img-top" alt="Gambar Hieroglif">
                     <div id="source-img">
                         <p>
@@ -27,7 +30,7 @@
                         </p>
                     </div>
                     
-                    <li><b>Abacus</b>, alat ini dianggap sebagai alat perhitungan digital pertama kali. Namun, sumber aslinya belum jelas untuk abacus atau sempoa, diperkirakan berasal dari Babylon, Cina atau Mesir <b>(2500 SM)</b>.</li>
+                    <li>{!! $contentMasaSejarah3 !!}</li>
                     <img class="imgmasasejarah" src="assets/images/abacus.jpg" class="card-img-top" alt="Abacus">
                     <div id="source-img">
                         <p>
@@ -35,7 +38,7 @@
                         </p>
                     </div>
                     
-                    <li><b>Bangsa Yunani</b> menginformasikan sistem penulisan yang dimulai dari kiri ke kanan memakai abjad fonetik yakni huruf yang dibangun berdasar kepada bunyi ucapan <b>(1775 SM)</b>.</li>
+                    <li>{!! $contentMasaSejarah4 !!}</li>
                     <img class="imgmasasejarah" src="assets/images/abjadfonetik.jpg" class="card-img-top" alt="Abjad Fonetik">
                     <div id="source-img">
                         <p>
@@ -43,7 +46,7 @@
                         </p>
                     </div>
                         
-                    <li><b>Bangsa China</b> mulai menuliskan sejarahnya pada kepingan tulang binatang <b>(1400 SM)</b>.</li>
+                    <li>{!! $contentMasaSejarah5 !!}</li>
                     <img class="imgmasasejarah" src="assets/images/turtleshell.jpg" class="card-img-top" alt="Turtle Shell">
                     <div id="source-img">
                         <p>
@@ -51,11 +54,11 @@
                         </p>
                     </div>
 
-                    <li><b>Bangsa Suriah</b> sudah membuat ensiklopedia untuk pertama kalinya <b>(1270 SM)</b>.</li>
-                    <li><b>Bangsa China</b> membangun sistem pelayanan pos dan kantor pos yang pertama kalinya <b>(900 SM)</b>.</li>
-                    <li><b>Bangsa Yunani</b> memakai burung merpati untuk mendistribusikan informasi <b>(776 SM)</b>.</li>
-                    <li><b>Bangsa Yunani</b> membangun perpustakan untuk pertama kalinya <b>(530 SM)</b>.</li>
-                    <li><b>Bangsa Mesir Kuno</b> memakai serat pohon papyrus sebagai kertas <b>(500 SM)</b>.</li>
+                    <li>{!! $contentMasaSejarah6 !!}</li>
+                    <li>{!! $contentMasaSejarah7 !!}</li>
+                    <li>{!! $contentMasaSejarah8 !!}</li>
+                    <li>{!! $contentMasaSejarah9 !!}</li>
+                    <li>{!! $contentMasaSejarah10 !!}</li>
                     <img class="imgmasasejarah" src="assets/images/letteronpapyrus.jpg" class="card-img-top" alt="Surat di atas Papyrus">
                     <div id="source-img">
                         <p>
@@ -63,7 +66,7 @@
                         </p>
                     </div>
                     
-                    <li><b>Bangsa China</b> menemukan kertas, orang tersebut ialah <b>Tsai Lun</b>. Kertasnya dibuat dari serat pohon bambu yang mana dihaluskan, dicuci, diratakan, dan terakhir dikeringkan <b>(105 SM)</b>.</li>
+                    <li>{!! $contentMasaSejarah11 !!}</li>
                     <div class="two_photos">
                         <div class="left_photo">
                             <img class="imgmasasejarah" src="assets/images/oldestextantpaperfragment.jpg" class="card-img-top" alt="">
@@ -84,16 +87,47 @@
                         </div>
                     </div>
                     
-                    <li><b>Bangsa Romawi</b> secara resmi membangun sistem pelayanan pos <b>14 M</b>.</li>
-                    <li><b>Kaisar Tiberus dari Roma</b> memakai cermin untuk alat mendistribusikan pesan (heliograf) <b>(37 M)</b>.</li>
-                    <li><b>Bangsa China</b> untuk pertama kalinya memproduksi mesin cetak yang dibuat dari lempengan kayu ukir. Sistem pencetakannya sendiri dilaksanakan dengan memakai blok kayu yang digores dan dipoles oleh tinta <b>(305 M)</b>.</li>
+                    <li>{!! $contentMasaSejarah12 !!}</li>
+                    <li>{!! $contentMasaSejarah13 !!}</li>
+                    <li>{!! $contentMasaSejarah14 !!}</li>
                 </ul>
             </div>
         </div>
     </div>
-
-
-    
 </div>
 
+@endsection
+
+@section('script')
+    <script>
+        document.getElementById('btnMasaSejarah').addEventListener('click', () => {
+            const text = document.getElementById('tech_per_item_sejarah').textContent.trim();
+            if (!text) {
+                alert('Teks kosong!');
+                return;
+            }
+
+            fetch('/tts/texttospeech', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ text })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Gagal request TTS');
+                return res.blob();
+            })
+            .then(blob => {
+                const audioUrl = URL.createObjectURL(blob);
+                const audio = new Audio(audioUrl);
+                audio.play();
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Gagal memutar suara: ' + err.message);
+            });
+        });
+    </script>
 @endsection

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="dicoding:email" content="ulfaladayya123@gmail.com">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Website Pengetahuan TIK | {{ $title }}</title>
     <!-- PWA  -->
     <meta name="theme-color" content="#6777ef"/>

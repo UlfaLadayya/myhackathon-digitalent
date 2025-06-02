@@ -8,8 +8,12 @@
 
     <div id="card-tik1" class="card">
         <div id="card-tik2" class="card-body">
+            <button id="btnKomponen">
+                <img id="icon_voice" src="assets/images/voice.png" alt="icon-voice">
+            </button>
             <div id="content_komponen">
-                Sistem Informasi terdiri dari beberapa elemen. Elemen-elemen tersebut meliputi komponen input, komponen output, komponen model, komponen teknologi, komponen 
+                {!! $contentKomponen !!}
+                {{-- Sistem Informasi terdiri dari beberapa elemen. Elemen-elemen tersebut meliputi komponen input, komponen output, komponen model, komponen teknologi, komponen 
                 perangkat lunak, komponen perangkat keras, komponen basis data, dan komponen kontrol.
                 <ol type="1">
                         <li><b>Komponen Input</b></li>
@@ -43,7 +47,7 @@
 
                         Banyak faktor yang dapat merusak sistem informasi, termasuk bencana alam. Di sinilah komponen kontrol berperan, karena komponen ini dapat mencegah 
                         kerusakan pada sistem atau, jika kerusakan sudah terjadi, membantu mempercepat perbaikan sistem informasi.
-                    </ol>
+                    </ol> --}}
                 </div>
         </div>
     </div>
@@ -51,4 +55,38 @@
     
 </div>
 
+@endsection
+
+@section('script')
+    <script>
+        document.getElementById('btnKomponen').addEventListener('click', () => {
+            const text = document.getElementById('content_komponen').textContent.trim();
+            if (!text) {
+                alert('Teks kosong!');
+                return;
+            }
+
+            fetch('/tts/texttospeech', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ text })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Gagal request TTS');
+                return res.blob();
+            })
+            .then(blob => {
+                const audioUrl = URL.createObjectURL(blob);
+                const audio = new Audio(audioUrl);
+                audio.play();
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Gagal memutar suara: ' + err.message);
+            });
+        });
+    </script>
 @endsection

@@ -8,8 +8,12 @@
 
     <div id="card-tik1" class="card">
         <div id="card-tik2" class="card-body">
+            <button id="btnDampak">
+                <img id="icon_voice" src="assets/images/voice.png" alt="icon-voice">
+            </button>
             <div id="content_dampak">
-                Teknologi informasi dan komunikasi, yang merupakan bagian dari ilmu pengetahuan dan teknologi secara keseluruhan, adalah jenis teknologi yang terkait dengan pengumpulan dan 
+                {!! $contentDampak !!}
+                {{-- Teknologi informasi dan komunikasi, yang merupakan bagian dari ilmu pengetahuan dan teknologi secara keseluruhan, adalah jenis teknologi yang terkait dengan pengumpulan dan 
                 pengolahan data. Dalam dunia pendidikan, TIK memiliki peranan yang besar. Teknologi informasi seakan telah menggantikan buku, guru, dan metode pembelajaran tradisional.
                 <br><br>
                 Dengan pesatnya perkembangan zaman, teknologi informasi juga berkembang dengan cepat. Manusia tidak dapat terlepas dari pemanfaatan teknologi 
@@ -76,15 +80,44 @@
                         dengan orang lain. Jika tidak ditangani dengan cepat, ini bisa mengakibatkan dampak yang sangat negatif, di mana individu akan menjadi lebih 
                         individualis dan interaksi serta sosialisasi bisa hilang sama sekali.
                     </ol>
-                </ol>
+                </ol> --}}
             </div>
         </div>
-    </div>
-
-    
-       
+    </div>   
 </div>
 
 @endsection
 
+@section('script')
+    <script>
+        document.getElementById('btnDampak').addEventListener('click', () => {
+            const text = document.getElementById('content_dampak').textContent.trim();
+            if (!text) {
+                alert('Teks kosong!');
+                return;
+            }
 
+            fetch('/tts/texttospeech', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ text })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Gagal request TTS');
+                return res.blob();
+            })
+            .then(blob => {
+                const audioUrl = URL.createObjectURL(blob);
+                const audio = new Audio(audioUrl);
+                audio.play();
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Gagal memutar suara: ' + err.message);
+            });
+        });
+    </script>
+@endsection
