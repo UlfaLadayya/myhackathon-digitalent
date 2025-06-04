@@ -1,4 +1,4 @@
-const CACHE_NAME = 'offline-v12';
+const CACHE_NAME = 'offline-v13';
 
 const filesToCache = [
     location.origin + '/',
@@ -73,52 +73,57 @@ const filesToCache = [
     location.origin + '/offline.html'
 ];
 
-self.addEventListener("install", event => {
+// ✅ Cache file saat install
+self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(async cache => {
       for (const file of filesToCache) {
         try {
           const response = await fetch(file);
-          if (!response.ok) {
-            throw new Error(`${file} gagal di-fetch: ${response.status}`);
-          }
+          if (!response.ok) throw new Error(`Gagal fetch: ${file}`);
           await cache.put(file, response.clone());
-        } catch (e) {
-          console.warn(`❌ Gagal cache: ${file}`, e);
+        } catch (err) {
+          console.warn(`❌ Tidak bisa cache: ${file}`, err);
         }
       }
     })
   );
 });
 
+// ✅ Fetch event hanya untuk GET dan tangani redirect dengan benar
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    caches.match(event.request).then(response => {
-      if (response) return response;
+    caches.match(event.request).then(cacheResponse => {
+      if (cacheResponse) {
+        return cacheResponse;
+      }
 
-      const newRequest = new Request(event.request.url, {
-        method: 'GET',
-        headers: new Headers({ 'Accept': 'application/json' }),
+      return fetch(event.request, {
         redirect: 'follow',
         credentials: 'include'
-      });
-
-      return fetch(newRequest).then(fetchResponse => {
-        if (!fetchResponse || fetchResponse.status === 401 || fetchResponse.status === 302) {
-          return caches.match('/offline.html');
+      }).then(networkResponse => {
+        // ⛔ Jangan cache redirect atau unauthorized
+        if (
+          !networkResponse ||
+          networkResponse.status === 401 ||
+          networkResponse.status === 302
+        ) {
+          return networkResponse;
         }
 
-        if (fetchResponse.status === 200 && fetchResponse.type === 'basic') {
-          const responseClone = fetchResponse.clone();
+        // ✅ Simpan ke cache jika response valid
+        if (networkResponse.status === 200 && networkResponse.type === 'basic') {
+          const responseClone = networkResponse.clone();
           caches.open(CACHE_NAME).then(cache => {
-            cache.put(newRequest, responseClone);  // <=== cache newRequest, bukan event.request
+            cache.put(event.request, responseClone);
           });
         }
 
-        return fetchResponse;
+        return networkResponse;
       }).catch(() => {
+        // Kalau gagal dan ini permintaan halaman
         if (event.request.mode === 'navigate') {
           return caches.match('/offline.html');
         }
@@ -126,6 +131,60 @@ self.addEventListener('fetch', event => {
     })
   );
 });
+
+// self.addEventListener("install", event => {
+//   event.waitUntil(
+//     caches.open(CACHE_NAME).then(async cache => {
+//       for (const file of filesToCache) {
+//         try {
+//           const response = await fetch(file);
+//           if (!response.ok) {
+//             throw new Error(`${file} gagal di-fetch: ${response.status}`);
+//           }
+//           await cache.put(file, response.clone());
+//         } catch (e) {
+//           console.warn(`❌ Gagal cache: ${file}`, e);
+//         }
+//       }
+//     })
+//   );
+// });
+
+// self.addEventListener('fetch', event => {
+//   if (event.request.method !== 'GET') return;
+
+//   event.respondWith(
+//     caches.match(event.request).then(response => {
+//       if (response) return response;
+
+//       const newRequest = new Request(event.request.url, {
+//         method: 'GET',
+//         headers: new Headers({ 'Accept': 'application/json' }),
+//         redirect: 'follow',
+//         credentials: 'include'
+//       });
+
+//       return fetch(newRequest).then(fetchResponse => {
+//         if (!fetchResponse || fetchResponse.status === 401 || fetchResponse.status === 302) {
+//           return caches.match('/offline.html');
+//         }
+
+//         if (fetchResponse.status === 200 && fetchResponse.type === 'basic') {
+//           const responseClone = fetchResponse.clone();
+//           caches.open(CACHE_NAME).then(cache => {
+//             cache.put(newRequest, responseClone);  // <=== cache newRequest, bukan event.request
+//           });
+//         }
+
+//         return fetchResponse;
+//       }).catch(() => {
+//         if (event.request.mode === 'navigate') {
+//           return caches.match('/offline.html');
+//         }
+//       });
+//     })
+//   );
+// });
 
 
 // self.addEventListener('activate', event => {
