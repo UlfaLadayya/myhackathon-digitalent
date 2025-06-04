@@ -26,13 +26,13 @@
 
                     <div class="signup_input" id="signupinput_name">
                         <label>Username</label><br>
-                        <input type="text" name="username" class="signup_namalengkap" value="{{ old('username') }}" placeholder="Enter Username" style="width: 300px">
+                        <input type="text" name="username" class="signup_namalengkap" value="{{ old('username') }}" placeholder="Enter Username" style="width: 300px" autocomplete="username">
                         <span class="text-danger">@error('username'){{ $message }} @enderror</span>
                     </div>
 
                     <div class="signup_input">
                         <label>Password</label><br>
-                        <input type="password" name="password" class="signup_password" value="{{ old('password') }}" placeholder="Enter Password" style="width: 300px">
+                        <input type="password" name="password" class="signup_password" value="{{ old('password') }}" placeholder="Enter Password" style="width: 300px" autocomplete="current-password">
                         <span class="text-danger">@error('password'){{ $message }} @enderror</span>
                     </div>
 
