@@ -102,30 +102,23 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      if (cachedResponse) {
-        return cachedResponse;
+    caches.match(event.request).then(response => {
+      if (response) {
+        return response;
       }
-
-      // Jangan cache POST atau method selain GET
+      // Jangan cache selain GET
       if (event.request.method !== 'GET') {
         return fetch(event.request);
       }
 
-      // Fetch dengan opsi redirect: 'follow' supaya response redirect ditangani otomatis
       return fetch(event.request, { redirect: 'follow' }).then(fetchResponse => {
-        // Response body hanya bisa dipakai sekali,
-        // clone harus dilakukan sebelum consume
         if (!fetchResponse || fetchResponse.status !== 200 || fetchResponse.type !== 'basic') {
           return fetchResponse;
         }
-
         const responseClone = fetchResponse.clone();
-
         caches.open(CACHE_NAME).then(cache => {
           cache.put(event.request, responseClone);
         });
-
         return fetchResponse;
       }).catch(() => {
         if (event.request.mode === 'navigate') {
@@ -135,6 +128,42 @@ self.addEventListener('fetch', event => {
     })
   );
 });
+
+// self.addEventListener('fetch', event => {
+//   event.respondWith(
+//     caches.match(event.request).then(cachedResponse => {
+//       if (cachedResponse) {
+//         return cachedResponse;
+//       }
+
+//       // Jangan cache POST atau method selain GET
+//       if (event.request.method !== 'GET') {
+//         return fetch(event.request);
+//       }
+
+//       // Fetch dengan opsi redirect: 'follow' supaya response redirect ditangani otomatis
+//       return fetch(event.request, { redirect: 'follow' }).then(fetchResponse => {
+//         // Response body hanya bisa dipakai sekali,
+//         // clone harus dilakukan sebelum consume
+//         if (!fetchResponse || fetchResponse.status !== 200 || fetchResponse.type !== 'basic') {
+//           return fetchResponse;
+//         }
+
+//         const responseClone = fetchResponse.clone();
+
+//         caches.open(CACHE_NAME).then(cache => {
+//           cache.put(event.request, responseClone);
+//         });
+
+//         return fetchResponse;
+//       }).catch(() => {
+//         if (event.request.mode === 'navigate') {
+//           return caches.match('/offline.html');
+//         }
+//       });
+//     })
+//   );
+// });
 
 
 // self.addEventListener('fetch', event => {
