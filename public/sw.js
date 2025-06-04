@@ -74,10 +74,21 @@ const filesToCache = [
 ];
 
 self.addEventListener("install", event => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => cache.addAll(filesToCache))
-    );
-    self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(async cache => {
+      for (const file of filesToCache) {
+        try {
+          const response = await fetch(file);
+          if (!response.ok) {
+            throw new Error(`${file} gagal di-fetch: ${response.status}`);
+          }
+          await cache.put(file, response.clone());
+        } catch (e) {
+          console.warn(`❌ Gagal cache: ${file}`, e);
+        }
+      }
+    })
+  );
 });
 
 self.addEventListener('activate', event => {
@@ -113,6 +124,13 @@ self.addEventListener('fetch', event => {
         })
     );
 });
+
+// self.addEventListener("install", event => {
+//     event.waitUntil(
+//         caches.open(CACHE_NAME).then(cache => cache.addAll(filesToCache))
+//     );
+//     self.skipWaiting();
+// });
 
 // const preLoad = function () {
 //     return caches.open("offline-v3").then(function (cache) {
