@@ -11,7 +11,7 @@
 
 WePTIK saya buat dari awal untuk tujuan mengikuti hackathon AI digitalent Komdigi.
 WePTIK ini milik Ulfa Ladayya.
-Website ini dibangun dengan <i>framework</i> Laravel dan PHP yang mempunyai beberapa fitur.
+Website ini dibangun dengan <i>framework</i> Laravel dan PHP yang mempunyai beberapa fitur..
 
 ## About Laravel
 
