@@ -16,7 +16,7 @@ class AccountController extends Controller
             $data = Signupuser::where('username', '=', Session::get('loginId'))->first();
         }
         return view('homepageuser', compact('data'),[
-            "title" => "Home",
+            "title" => "Home Page",
         ]);
     }
 
