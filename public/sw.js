@@ -1,4 +1,4 @@
-const CACHE_NAME = 'offline-v5';
+const CACHE_NAME = 'offline-v6';
 
 const filesToCache = [
     location.origin + '/',
@@ -101,7 +101,11 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
+  // if (event.request.method !== 'GET') return;
+    if (event.request.method !== 'GET') {
+    // jangan cache POST, PUT, DELETE, dll
+    return event.respondWith(fetch(event.request));
+  }
 
   event.respondWith(
     caches.match(event.request).then(response => {
