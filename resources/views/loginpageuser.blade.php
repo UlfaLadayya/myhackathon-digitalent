@@ -8,7 +8,7 @@
             <div class="left_card">
                 <h5 id="title_signup">Welcome Back Smart People!</h5>
                 <h6 id="subtitle_signup">Fill your day with new knowledge</h6>
-                <form action="{{ route('Check') }}" method="POST">
+                <form action="{{ url('/Check') }}" method="POST">
 
                     @if(Session::has('success'))
                     <div class="alert alert-success">
