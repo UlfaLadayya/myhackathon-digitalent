@@ -1,4 +1,4 @@
-const CACHE_NAME = 'offline-v6';
+const CACHE_NAME = 'offline-v7';
 
 const filesToCache = [
     location.origin + '/',
@@ -101,34 +101,30 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // if (event.request.method !== 'GET') return;
-    if (event.request.method !== 'GET') {
-    // jangan cache POST, PUT, DELETE, dll
-    return event.respondWith(fetch(event.request));
-  }
-
   event.respondWith(
-    caches.match(event.request).then(response => {
-      if (response) {
-        return response;
+    caches.match(event.request).then(cachedResponse => {
+      if (cachedResponse) {
+        return cachedResponse;
       }
 
-      if (!event.request.url.startsWith(self.location.origin)) {
+      // Jangan cache POST atau method selain GET
+      if (event.request.method !== 'GET') {
         return fetch(event.request);
       }
 
-      return fetch(event.request).then(fetchResponse => {
-        // Jika response redirect, jangan cache
-        if (fetchResponse.redirected) {
+      // Fetch dengan opsi redirect: 'follow' supaya response redirect ditangani otomatis
+      return fetch(event.request, { redirect: 'follow' }).then(fetchResponse => {
+        // Response body hanya bisa dipakai sekali,
+        // clone harus dilakukan sebelum consume
+        if (!fetchResponse || fetchResponse.status !== 200 || fetchResponse.type !== 'basic') {
           return fetchResponse;
         }
 
-        // Cache hanya response yang OK (status 200)
-        if (fetchResponse.ok) {
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, fetchResponse.clone());
-          });
-        }
+        const responseClone = fetchResponse.clone();
+
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, responseClone);
+        });
 
         return fetchResponse;
       }).catch(() => {
@@ -142,6 +138,47 @@ self.addEventListener('fetch', event => {
 
 
 // self.addEventListener('fetch', event => {
+//   // if (event.request.method !== 'GET') return;
+//     if (event.request.method !== 'GET') {
+//     // jangan cache POST, PUT, DELETE, dll
+//     return event.respondWith(fetch(event.request));
+//   }
+
+//   event.respondWith(
+//     caches.match(event.request).then(response => {
+//       if (response) {
+//         return response;
+//       }
+
+//       if (!event.request.url.startsWith(self.location.origin)) {
+//         return fetch(event.request);
+//       }
+
+//       return fetch(event.request).then(fetchResponse => {
+//         // Jika response redirect, jangan cache
+//         if (fetchResponse.redirected) {
+//           return fetchResponse;
+//         }
+
+//         // Cache hanya response yang OK (status 200)
+//         if (fetchResponse.ok) {
+//           caches.open(CACHE_NAME).then(cache => {
+//             cache.put(event.request, fetchResponse.clone());
+//           });
+//         }
+
+//         return fetchResponse;
+//       }).catch(() => {
+//         if (event.request.mode === 'navigate') {
+//           return caches.match('/offline.html');
+//         }
+//       });
+//     })
+//   );
+// });
+
+
+// self.addEventListener('fetch', event => { ///////INI BETULLLLLLLLLLLLLLL
 //     // Hanya tangani GET request
 //     if (event.request.method !== 'GET') return;
 
