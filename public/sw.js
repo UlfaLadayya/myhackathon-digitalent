@@ -91,14 +91,13 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // ❗ Penting: hanya intercept GET
   if (event.request.method !== 'GET') return;
 
-  // Jangan intercept permintaan API/auth atau yang rawan redirect (bisa disesuaikan)
   const url = new URL(event.request.url);
-  if (url.pathname.startsWith('/Check') || url.pathname.startsWith('/logout') || url.pathname.startsWith('/login')) {
-    // Lewatkan agar service worker tidak ganggu POST/GET login/logout
-    return;
+
+  // Skip fetch event untuk path tertentu supaya service worker tidak ganggu login/logout/cek
+  if (url.pathname.startsWith('/Check') || url.pathname.startsWith('/logoutuser') || url.pathname.startsWith('/loginpageuser')) {
+    return;  // Lewatkan
   }
 
   event.respondWith(
@@ -109,7 +108,6 @@ self.addEventListener('fetch', event => {
         redirect: 'follow',
         credentials: 'include'
       }).then(networkResponse => {
-        // Jangan cache response redirect (302), unauthorized (401), atau errors
         if (!networkResponse || networkResponse.status === 401 || networkResponse.status === 302) {
           return networkResponse;
         }
@@ -130,6 +128,48 @@ self.addEventListener('fetch', event => {
     })
   );
 });
+
+
+// self.addEventListener('fetch', event => {
+//   // ❗ Penting: hanya intercept GET
+//   if (event.request.method !== 'GET') return;
+
+//   // Jangan intercept permintaan API/auth atau yang rawan redirect (bisa disesuaikan)
+//   const url = new URL(event.request.url);
+//   if (url.pathname.startsWith('/Check') || url.pathname.startsWith('/logout') || url.pathname.startsWith('/login')) {
+//     // Lewatkan agar service worker tidak ganggu POST/GET login/logout
+//     return;
+//   }
+
+//   event.respondWith(
+//     caches.match(event.request).then(cacheResponse => {
+//       if (cacheResponse) return cacheResponse;
+
+//       return fetch(event.request, {
+//         redirect: 'follow',
+//         credentials: 'include'
+//       }).then(networkResponse => {
+//         // Jangan cache response redirect (302), unauthorized (401), atau errors
+//         if (!networkResponse || networkResponse.status === 401 || networkResponse.status === 302) {
+//           return networkResponse;
+//         }
+
+//         if (networkResponse.status === 200 && networkResponse.type === 'basic') {
+//           const responseClone = networkResponse.clone();
+//           caches.open(CACHE_NAME).then(cache => {
+//             cache.put(event.request, responseClone);
+//           });
+//         }
+
+//         return networkResponse;
+//       }).catch(() => {
+//         if (event.request.mode === 'navigate') {
+//           return caches.match('/offline.html');
+//         }
+//       });
+//     })
+//   );
+// });
 
 // self.addEventListener('fetch', event => {
 //   // ❗ Penting: hanya intercept GET
