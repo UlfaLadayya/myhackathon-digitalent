@@ -1,4 +1,4 @@
-const CACHE_NAME = 'offline-v3';
+const CACHE_NAME = 'offline-v4';
 
 const filesToCache = [
     location.origin + '/',
@@ -100,23 +100,30 @@ self.addEventListener('activate', event => {
     self.clients.claim();
 });
 
+
+
 self.addEventListener('fetch', event => {
+    // Hanya tangani GET request
+    if (event.request.method !== 'GET') return;
+
     event.respondWith(
         caches.match(event.request).then(response => {
             if (response) {
                 return response; // return cache if found
             }
 
+            // Jangan cache request ke luar domain
             if (!event.request.url.startsWith(self.location.origin)) {
                 return fetch(event.request);
             }
+
             return fetch(event.request).then(fetchResponse => {
                 return caches.open(CACHE_NAME).then(cache => {
                     cache.put(event.request, fetchResponse.clone());
                     return fetchResponse;
                 });
             }).catch(() => {
-                // fallback to offline.html if fetch fails (offline mode)
+                // fallback jika offline
                 if (event.request.mode === 'navigate') {
                     return caches.match('/offline.html');
                 }
@@ -124,6 +131,32 @@ self.addEventListener('fetch', event => {
         })
     );
 });
+
+
+// self.addEventListener('fetch', event => {
+//     event.respondWith(
+//         caches.match(event.request).then(response => {
+//             if (response) {
+//                 return response; // return cache if found
+//             }
+
+//             if (!event.request.url.startsWith(self.location.origin)) {
+//                 return fetch(event.request);
+//             }
+//             return fetch(event.request).then(fetchResponse => {
+//                 return caches.open(CACHE_NAME).then(cache => {
+//                     cache.put(event.request, fetchResponse.clone());
+//                     return fetchResponse;
+//                 });
+//             }).catch(() => {
+//                 // fallback to offline.html if fetch fails (offline mode)
+//                 if (event.request.mode === 'navigate') {
+//                     return caches.match('/offline.html');
+//                 }
+//             });
+//         })
+//     );
+// });
 
 // self.addEventListener("install", event => {
 //     event.waitUntil(

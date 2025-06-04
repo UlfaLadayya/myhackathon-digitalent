@@ -20,7 +20,7 @@
                 <a class="nav-link pe-3 {{ ($title === 'Suggestions & Criticism') ? 'active' : '' }}" href="/suggestionscriticism">Saran dan Kritik</a>
             </li>
 
-            <form id='form-logout' action="{{ url('/logoutuser') }}" method="POST" style="display: none;">
+            <form id='form-logout' action="{{ route('logoutuser') }}" method="POST" style="display: none;">
                 @csrf
             </form>
             <li class="nav-item">
