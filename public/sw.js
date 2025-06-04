@@ -1,4 +1,4 @@
-const CACHE_NAME = 'offline-v4';
+const CACHE_NAME = 'offline-v5';
 
 const filesToCache = [
     location.origin + '/',
@@ -100,37 +100,72 @@ self.addEventListener('activate', event => {
     self.clients.claim();
 });
 
-
-
 self.addEventListener('fetch', event => {
-    // Hanya tangani GET request
-    if (event.request.method !== 'GET') return;
+  if (event.request.method !== 'GET') return;
 
-    event.respondWith(
-        caches.match(event.request).then(response => {
-            if (response) {
-                return response; // return cache if found
-            }
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      if (response) {
+        return response;
+      }
 
-            // Jangan cache request ke luar domain
-            if (!event.request.url.startsWith(self.location.origin)) {
-                return fetch(event.request);
-            }
+      if (!event.request.url.startsWith(self.location.origin)) {
+        return fetch(event.request);
+      }
 
-            return fetch(event.request).then(fetchResponse => {
-                return caches.open(CACHE_NAME).then(cache => {
-                    cache.put(event.request, fetchResponse.clone());
-                    return fetchResponse;
-                });
-            }).catch(() => {
-                // fallback jika offline
-                if (event.request.mode === 'navigate') {
-                    return caches.match('/offline.html');
-                }
-            });
-        })
-    );
+      return fetch(event.request).then(fetchResponse => {
+        // Jika response redirect, jangan cache
+        if (fetchResponse.redirected) {
+          return fetchResponse;
+        }
+
+        // Cache hanya response yang OK (status 200)
+        if (fetchResponse.ok) {
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, fetchResponse.clone());
+          });
+        }
+
+        return fetchResponse;
+      }).catch(() => {
+        if (event.request.mode === 'navigate') {
+          return caches.match('/offline.html');
+        }
+      });
+    })
+  );
 });
+
+
+// self.addEventListener('fetch', event => {
+//     // Hanya tangani GET request
+//     if (event.request.method !== 'GET') return;
+
+//     event.respondWith(
+//         caches.match(event.request).then(response => {
+//             if (response) {
+//                 return response; // return cache if found
+//             }
+
+//             // Jangan cache request ke luar domain
+//             if (!event.request.url.startsWith(self.location.origin)) {
+//                 return fetch(event.request);
+//             }
+
+//             return fetch(event.request).then(fetchResponse => {
+//                 return caches.open(CACHE_NAME).then(cache => {
+//                     cache.put(event.request, fetchResponse.clone());
+//                     return fetchResponse;
+//                 });
+//             }).catch(() => {
+//                 // fallback jika offline
+//                 if (event.request.mode === 'navigate') {
+//                     return caches.match('/offline.html');
+//                 }
+//             });
+//         })
+//     );
+// });
 
 
 // self.addEventListener('fetch', event => {
