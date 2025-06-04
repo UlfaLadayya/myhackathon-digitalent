@@ -95,6 +95,10 @@ self.addEventListener('fetch', event => {
             if (response) {
                 return response; // return cache if found
             }
+
+            if (!event.request.url.startsWith(self.location.origin)) {
+                return fetch(event.request);
+            }
             return fetch(event.request).then(fetchResponse => {
                 return caches.open(CACHE_NAME).then(cache => {
                     cache.put(event.request, fetchResponse.clone());
