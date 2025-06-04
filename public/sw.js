@@ -1,4 +1,4 @@
-const CACHE_NAME = 'offline-v13';
+const CACHE_NAME = 'offline-v14';
 
 const filesToCache = [
     location.origin + '/',
