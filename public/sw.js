@@ -1,4 +1,4 @@
-const CACHE_NAME = 'offline-v11';
+const CACHE_NAME = 'offline-v12';
 
 const filesToCache = [
     location.origin + '/',
@@ -91,31 +91,16 @@ self.addEventListener("install", event => {
   );
 });
 
-self.addEventListener('activate', event => {
-    event.waitUntil(
-        caches.keys().then(keys => Promise.all(
-            keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
-        ))
-    );
-    self.clients.claim();
-});
-
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') {
-    return;
-  }
+  if (event.request.method !== 'GET') return;
 
   event.respondWith(
     caches.match(event.request).then(response => {
-      if (response) {
-        return response;
-      }
+      if (response) return response;
 
       const newRequest = new Request(event.request.url, {
         method: 'GET',
-        headers: new Headers({
-          'Accept': 'application/json'
-        }),
+        headers: new Headers({ 'Accept': 'application/json' }),
         redirect: 'follow',
         credentials: 'include'
       });
@@ -128,7 +113,7 @@ self.addEventListener('fetch', event => {
         if (fetchResponse.status === 200 && fetchResponse.type === 'basic') {
           const responseClone = fetchResponse.clone();
           caches.open(CACHE_NAME).then(cache => {
-            cache.put(newRequest, responseClone); // fixed
+            cache.put(newRequest, responseClone);  // <=== cache newRequest, bukan event.request
           });
         }
 
@@ -141,6 +126,58 @@ self.addEventListener('fetch', event => {
     })
   );
 });
+
+
+// self.addEventListener('activate', event => {
+//     event.waitUntil(
+//         caches.keys().then(keys => Promise.all(
+//             keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+//         ))
+//     );
+//     self.clients.claim();
+// });
+
+// self.addEventListener('fetch', event => {
+//   if (event.request.method !== 'GET') {
+//     return;
+//   }
+
+//   event.respondWith(
+//     caches.match(event.request).then(response => {
+//       if (response) {
+//         return response;
+//       }
+
+//       const newRequest = new Request(event.request.url, {
+//         method: 'GET',
+//         headers: new Headers({
+//           'Accept': 'application/json'
+//         }),
+//         redirect: 'follow',
+//         credentials: 'include'
+//       });
+
+//       return fetch(newRequest).then(fetchResponse => {
+//         if (!fetchResponse || fetchResponse.status === 401 || fetchResponse.status === 302) {
+//           return caches.match('/offline.html');
+//         }
+
+//         if (fetchResponse.status === 200 && fetchResponse.type === 'basic') {
+//           const responseClone = fetchResponse.clone();
+//           caches.open(CACHE_NAME).then(cache => {
+//             cache.put(newRequest, responseClone); // fixed
+//           });
+//         }
+
+//         return fetchResponse;
+//       }).catch(() => {
+//         if (event.request.mode === 'navigate') {
+//           return caches.match('/offline.html');
+//         }
+//       });
+//     })
+//   );
+// });
 
 
 // self.addEventListener('fetch', event => {
