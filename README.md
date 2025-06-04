@@ -7,7 +7,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## WePTIK
+## -WePTIK-
 
 WePTIK saya buat dari awal untuk tujuan mengikuti hackathon AI digitalent Komdigi.
 WePTIK ini milik Ulfa Ladayya (Ulf's Creativity).
