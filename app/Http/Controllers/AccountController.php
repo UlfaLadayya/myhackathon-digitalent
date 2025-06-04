@@ -65,7 +65,7 @@ class AccountController extends Controller
         ];
 
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('/homepageuser');
+            return redirect('/homepageuser');
         }
 
         return back()->with('fail', 'Username atau password salah.');
