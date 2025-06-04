@@ -1,4 +1,4 @@
-const CACHE_NAME = 'offline-v9';
+const CACHE_NAME = 'offline-v10';
 
 const filesToCache = [
     location.origin + '/',
@@ -101,7 +101,6 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // Hanya tangani permintaan GET
   if (event.request.method !== 'GET') {
     return;
   }
@@ -112,34 +111,29 @@ self.addEventListener('fetch', event => {
         return response;
       }
 
-      // Buat ulang request dengan header Accept: application/json
       const newRequest = new Request(event.request.url, {
         method: 'GET',
         headers: new Headers({
           'Accept': 'application/json'
         }),
         redirect: 'follow',
-        credentials: 'include' // penting jika pakai auth cookie Laravel
+        credentials: 'include'
       });
 
       return fetch(newRequest).then(fetchResponse => {
-        // Tangani response yang tidak sukses
         if (!fetchResponse || fetchResponse.status === 401 || fetchResponse.status === 302) {
-          // Bisa arahkan ke offline page, atau abaikan saja
           return caches.match('/offline.html');
         }
 
-        // Simpan response ke cache jika valid
         if (fetchResponse.status === 200 && fetchResponse.type === 'basic') {
           const responseClone = fetchResponse.clone();
           caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseClone);
+            cache.put(newRequest, responseClone); // fixed
           });
         }
 
         return fetchResponse;
       }).catch(() => {
-        // Jika fetch gagal dan ini adalah permintaan halaman navigasi
         if (event.request.mode === 'navigate') {
           return caches.match('/offline.html');
         }
@@ -147,6 +141,55 @@ self.addEventListener('fetch', event => {
     })
   );
 });
+
+
+// self.addEventListener('fetch', event => {
+//   // Hanya tangani permintaan GET
+//   if (event.request.method !== 'GET') {
+//     return;
+//   }
+
+//   event.respondWith(
+//     caches.match(event.request).then(response => {
+//       if (response) {
+//         return response;
+//       }
+
+//       // Buat ulang request dengan header Accept: application/json
+//       const newRequest = new Request(event.request.url, {
+//         method: 'GET',
+//         headers: new Headers({
+//           'Accept': 'application/json'
+//         }),
+//         redirect: 'follow',
+//         credentials: 'include' // penting jika pakai auth cookie Laravel
+//       });
+
+//       return fetch(newRequest).then(fetchResponse => {
+//         // Tangani response yang tidak sukses
+//         if (!fetchResponse || fetchResponse.status === 401 || fetchResponse.status === 302) {
+//           // Bisa arahkan ke offline page, atau abaikan saja
+//           return caches.match('/offline.html');
+//         }
+
+//         // Simpan response ke cache jika valid
+//         if (fetchResponse.status === 200 && fetchResponse.type === 'basic') {
+//           const responseClone = fetchResponse.clone();
+//           caches.open(CACHE_NAME).then(cache => {
+//             cache.put(event.request, responseClone);
+//           });
+//         }
+
+//         return fetchResponse;
+//       }).catch(() => {
+//         // Jika fetch gagal dan ini adalah permintaan halaman navigasi
+//         if (event.request.mode === 'navigate') {
+//           return caches.match('/offline.html');
+//         }
+//       });
+//     })
+//   );
+// });
 
 
 // self.addEventListener('fetch', event => {
