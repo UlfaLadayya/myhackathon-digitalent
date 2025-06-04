@@ -1,4 +1,4 @@
-const CACHE_NAME = 'offline-v14';
+const CACHE_NAME = 'offline-v15';
 
 const filesToCache = [
     location.origin + '/',
@@ -90,21 +90,18 @@ self.addEventListener('install', event => {
   );
 });
 
-// ✅ Fetch event hanya untuk GET dan tangani redirect dengan benar
 self.addEventListener('fetch', event => {
+  // ❗ Penting: hanya intercept GET
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
     caches.match(event.request).then(cacheResponse => {
-      if (cacheResponse) {
-        return cacheResponse;
-      }
+      if (cacheResponse) return cacheResponse;
 
       return fetch(event.request, {
         redirect: 'follow',
         credentials: 'include'
       }).then(networkResponse => {
-        // ⛔ Jangan cache redirect atau unauthorized
         if (
           !networkResponse ||
           networkResponse.status === 401 ||
@@ -113,7 +110,6 @@ self.addEventListener('fetch', event => {
           return networkResponse;
         }
 
-        // ✅ Simpan ke cache jika response valid
         if (networkResponse.status === 200 && networkResponse.type === 'basic') {
           const responseClone = networkResponse.clone();
           caches.open(CACHE_NAME).then(cache => {
@@ -123,7 +119,6 @@ self.addEventListener('fetch', event => {
 
         return networkResponse;
       }).catch(() => {
-        // Kalau gagal dan ini permintaan halaman
         if (event.request.mode === 'navigate') {
           return caches.match('/offline.html');
         }
@@ -131,6 +126,49 @@ self.addEventListener('fetch', event => {
     })
   );
 });
+
+
+// ✅ Fetch event hanya untuk GET dan tangani redirect dengan benar
+// self.addEventListener('fetch', event => {
+//   if (event.request.method !== 'GET') return;
+
+//   event.respondWith(
+//     caches.match(event.request).then(cacheResponse => {
+//       if (cacheResponse) {
+//         return cacheResponse;
+//       }
+
+//       return fetch(event.request, {
+//         redirect: 'follow',
+//         credentials: 'include'
+//       }).then(networkResponse => {
+//         // ⛔ Jangan cache redirect atau unauthorized
+//         if (
+//           !networkResponse ||
+//           networkResponse.status === 401 ||
+//           networkResponse.status === 302
+//         ) {
+//           return networkResponse;
+//         }
+
+//         // ✅ Simpan ke cache jika response valid
+//         if (networkResponse.status === 200 && networkResponse.type === 'basic') {
+//           const responseClone = networkResponse.clone();
+//           caches.open(CACHE_NAME).then(cache => {
+//             cache.put(event.request, responseClone);
+//           });
+//         }
+
+//         return networkResponse;
+//       }).catch(() => {
+//         // Kalau gagal dan ini permintaan halaman
+//         if (event.request.mode === 'navigate') {
+//           return caches.match('/offline.html');
+//         }
+//       });
+//     })
+//   );
+// });
 
 // self.addEventListener("install", event => {
 //   event.waitUntil(
