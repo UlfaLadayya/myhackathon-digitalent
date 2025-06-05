@@ -23,6 +23,17 @@
             <form id='form-logout' action="{{ route('logoutuser') }}" method="POST" style="display: none;">
                 @csrf
             </form>
+
+            <script>
+                document.getElementById('form-logout').addEventListener('submit', function () {
+                if ('caches' in window) {
+                    caches.keys().then(function(names) {
+                    for (let name of names) caches.delete(name);
+                    });
+                }
+                });
+            </script>
+
             <li class="nav-item">
                 <a class="nav-link {{ ($title === 'Logout') ? 'active' : '' }}" href="#" onclick="event.preventDefault(); document.getElementById('form-logout').submit();">Log Out</a>
             </li>

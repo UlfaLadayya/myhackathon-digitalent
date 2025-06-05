@@ -8,7 +8,7 @@
             <div class="left_card">
                 <h5 id="title_signup">Let's go on an adventure with a variety of information and communication technology knowledge!</h5>
                 <h6 id="subtitle_signup">Create an account and start to learn the knowledge</h6>
-                <form action="{{ route('Save') }}" method="POST">
+                <form id="signupform" action="{{ route('Save') }}" method="POST">
                     
                     @if(Session::get('success'))
                     <div class="alert alert-success">
@@ -41,6 +41,16 @@
 
                     <p class="have_account">Already have an account? <a href="/loginpageuser" class="link_account">Log In</a> </p>
                 </form>
+
+                <script>
+                    document.getElementById('signupform').addEventListener('submit', function () {
+                    if ('caches' in window) {
+                        caches.keys().then(function(names) {
+                        for (let name of names) caches.delete(name);
+                        });
+                    }
+                    });
+                </script>
             </div>
             <div class="right_card">
                 {{-- <h4>Right Content</h4> --}}

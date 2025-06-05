@@ -8,7 +8,7 @@
             <div class="left_card">
                 <h5 id="title_signup">Welcome Back Smart People!</h5>
                 <h6 id="subtitle_signup">Fill your day with new knowledge</h6>
-                <form action="{{ route('Check') }}" method="POST">
+                <form id="loginform" action="{{ route('Check') }}" method="POST">
 
                     @if(Session::has('success'))
                     <div class="alert alert-success">
@@ -42,6 +42,16 @@
 
                     <p class="have_account">Don't have an account? <a href="/signuppageuser" class="link_account">Sign Up</a> </p>
                 </form>
+
+                <script>
+                    document.getElementById('loginform').addEventListener('submit', function () {
+                    if ('caches' in window) {
+                        caches.keys().then(function(names) {
+                        for (let name of names) caches.delete(name);
+                        });
+                    }
+                    });
+                </script>
             </div>
             <div class="right_card">
                 {{-- <h4>Right Content</h4> --}}
