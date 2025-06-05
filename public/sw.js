@@ -48,7 +48,7 @@ const filesToCache = [
     location.origin + '/assets/images/komputergenerasipertama.jpg',
     location.origin + '/assets/images/gambarhieroglif.jpg',
     location.origin + '/assets/images/abacus.jpg',
-    location.origin + '/assets/images/abjadfonetik.jpg',
+    location.origin + '/assets/images/abjadfonetik.png',
     location.origin + '/assets/images/turtleshell.jpg',
     location.origin + '/assets/images/letteronpapyrus.jpg',
     location.origin + '/assets/images/oldestextantpaperfragment.jpg',
@@ -91,43 +91,132 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
-
   const url = new URL(event.request.url);
 
-  // Skip fetch event untuk path tertentu supaya service worker tidak ganggu login/logout/cek
-  if (url.pathname.startsWith('/Check') || url.pathname.startsWith('/logoutuser') || url.pathname.startsWith('/loginpageuser')) {
-    return;  // Lewatkan
+  // Jangan cache untuk path-path penting
+  const skipCache = (
+      url.pathname.startsWith('/Check') ||
+      url.pathname.includes('/Save') ||
+      url.pathname.includes('/loginpageuser') ||
+      url.pathname.includes('/signuppageuser') ||
+      url.pathname.includes('/logoutuser') ||
+      url.pathname.includes('/txtfile') ||
+      url.pathname.includes('/txtfile/audiorequestcontrol') ||
+      url.pathname.includes('/tts/generate') ||
+      url.pathname.includes('/tts/play/{filename}') ||
+      url.pathname.includes('/tts') ||
+      url.pathname.includes('/tts/texttospeech') ||
+      url.pathname.endsWith('.mp3') ||
+      url.pathname.endsWith('.wav')
+  );
+
+  if (event.request.method !== 'GET' || skipCache) {
+    return; // langsung ke jaringan, biarkan browser yang handle
   }
 
-  event.respondWith(
-    caches.match(event.request).then(cacheResponse => {
-      if (cacheResponse) return cacheResponse;
+  event.respondWith((async () => {
+    const cacheResponse = await caches.match(event.request);
+    if (cacheResponse) return cacheResponse;
 
-      return fetch(event.request, {
-        redirect: 'follow',
-        credentials: 'include'
-      }).then(networkResponse => {
-        if (!networkResponse || networkResponse.status === 401 || networkResponse.status === 302) {
-          return networkResponse;
-        }
-
-        if (networkResponse.status === 200 && networkResponse.type === 'basic') {
-          const responseClone = networkResponse.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseClone);
-          });
-        }
-
-        return networkResponse;
-      }).catch(() => {
-        if (event.request.mode === 'navigate') {
-          return caches.match('/offline.html');
-        }
-      });
-    })
-  );
+    try {
+      const networkResponse = await fetch(event.request);
+      if (
+        networkResponse.status === 200 &&
+        networkResponse.type === 'basic' &&
+        !skipCache
+      ) {
+        const responseClone = networkResponse.clone();
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, responseClone);
+        });
+      }
+      return networkResponse;
+    } catch (e) {
+      if (event.request.mode === 'navigate') {
+        return caches.match('/offline.html');
+      }
+    }
+  })());
 });
+
+
+// event.respondWith((async () => {
+//   const url = new URL(event.request.url);
+
+//   // Jangan cache audio, API, auth, dll
+//   if (url.pathname.startsWith('/Check') ||
+//       url.pathname.includes('/Save') ||
+//       url.pathname.includes('/loginpageuser') ||
+//       url.pathname.includes('/signuppageuser') ||
+//       url.pathname.includes('/logoutuser') ||
+//       url.pathname.includes('/txtfile') ||
+//       url.pathname.includes('/txtfile/audiorequestcontrol') ||
+//       url.pathname.includes('/tts/generate') ||
+//       url.pathname.includes('/tts/play/{filename}') ||
+//       url.pathname.includes('/tts') ||
+//       url.pathname.includes('/tts/texttospeech') ||
+//       url.pathname.endsWith('.mp3')) {
+//     return fetch(event.request);
+//   }
+
+//   const cacheResponse = await caches.match(event.request);
+//   if (cacheResponse) return cacheResponse;
+
+//   try {
+//     const networkResponse = await fetch(event.request);
+//     if (networkResponse.status === 200 && networkResponse.type === 'basic') {
+//       const responseClone = networkResponse.clone();
+//       caches.open(CACHE_NAME).then(cache => {
+//         cache.put(event.request, responseClone);
+//       });
+//     }
+//     return networkResponse;
+//   } catch (e) {
+//     if (event.request.mode === 'navigate') {
+//       return caches.match('/offline.html');
+//     }
+//   }
+// })());
+
+
+// self.addEventListener('fetch', event => {
+//   if (event.request.method !== 'GET') return;
+
+//   const url = new URL(event.request.url);
+
+//   // Skip fetch event untuk path tertentu supaya service worker tidak ganggu login/logout/cek
+//   if (url.pathname.startsWith('/Check') || url.pathname.startsWith('/logoutuser') || url.pathname.startsWith('/loginpageuser')) {
+//     return;  // Lewatkan
+//   }
+
+//   event.respondWith(
+//     caches.match(event.request).then(cacheResponse => {
+//       if (cacheResponse) return cacheResponse;
+
+//       return fetch(event.request, {
+//         redirect: 'follow',
+//         credentials: 'include'
+//       }).then(networkResponse => {
+//         if (!networkResponse || networkResponse.status === 401 || networkResponse.status === 302) {
+//           return networkResponse;
+//         }
+
+//         if (networkResponse.status === 200 && networkResponse.type === 'basic') {
+//           const responseClone = networkResponse.clone();
+//           caches.open(CACHE_NAME).then(cache => {
+//             cache.put(event.request, responseClone);
+//           });
+//         }
+
+//         return networkResponse;
+//       }).catch(() => {
+//         if (event.request.mode === 'navigate') {
+//           return caches.match('/offline.html');
+//         }
+//       });
+//     })
+//   );
+// });
 
 
 // self.addEventListener('fetch', event => {

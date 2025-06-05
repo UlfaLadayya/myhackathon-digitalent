@@ -39,7 +39,7 @@
                     </div>
                     
                     <li>{!! $contentMasaSejarah4 !!}</li>
-                    <img class="imgmasasejarah" src="assets/images/abjadfonetik.jpg" class="card-img-top" alt="Abjad Fonetik">
+                    <img class="imgmasasejarah" src="assets/images/abjadfonetik.png" class="card-img-top" alt="Abjad Fonetik">
                     <div id="source-img">
                         <p>
                             sumber gambar : https://id.wikipedia.org/wiki/Alfabet_Yunani
